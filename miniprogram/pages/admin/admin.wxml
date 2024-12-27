@@ -1,0 +1,92 @@
+<view class="container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar" style="padding-top: {{menuPosition.top}}px;">
+    <view class="nav-header">
+      <view class="back-btn" bindtap="goBack">返回</view>
+      <view class="nav-title">后台管理</view>
+      <view class="placeholder"></view>
+    </view>
+    <view class="nav-tabs">
+      <view class="tab {{selectedItemIndex === 1 ? 'active' : ''}}" 
+        bindtap="onChangeTab" data-key="1">添加商品</view>
+      <view class="tab {{selectedItemIndex === 2 ? 'active' : ''}}" 
+        bindtap="onChangeTab" data-key="2">删除商品</view>
+      <view class="tab {{selectedItemIndex === 3 ? 'active' : ''}}" 
+        bindtap="onChangeTab" data-key="3">广告管理</view>
+    </view>
+  </view>
+
+  <!-- 内容区域 -->
+  <view class="content" style="margin-top: {{menuPosition.top + menuPosition.height + 10}}px;">
+    <!-- 添加商品页面 -->
+    <block wx:if="{{selectedItemIndex === 1}}">
+      <view class="form-card">
+        <view class="form-group">
+          <view class="form-item">
+            <text class="label">商品名称</text>
+            <input class="input" value="{{productName}}" bindinput="onNameInput" placeholder="请输入商品名称"/>
+          </view>
+          
+          <view class="form-item">
+            <text class="label">商品简介</text>
+            <textarea class="textarea" value="{{productDesc}}" bindinput="onDescInput" placeholder="请输入商品简介"/>
+          </view>
+          
+          <view class="form-item">
+            <text class="label">商品价格</text>
+            <input class="input" type="digit" value="{{productPrice}}" bindinput="onPriceInput" placeholder="请输入商品价格"/>
+          </view>
+          
+          <view class="form-item">
+            <text class="label">商品图片</text>
+            <view class="image-uploader" bindtap="chooseImage">
+              <image wx:if="{{imageUrl}}" src="{{imageUrl}}" mode="aspectFill" class="preview-image"/>
+              <view wx:else class="upload-placeholder">
+                <text class="upload-icon">+</text>
+                <text class="upload-text">上传图片</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <button class="submit-btn" bindtap="submitProduct">添加商品</button>
+      </view>
+    </block>
+
+    <!-- 删除商品页面 -->
+    <block wx:if="{{selectedItemIndex === 2}}">
+      <view class="product-manage-list">
+        <view wx:if="{{productList.length === 0}}" class="empty-tip">
+          <text>暂无商品</text>
+        </view>
+        <view class="manage-item" wx:for="{{productList}}" wx:key="_id">
+          <image src="{{item.imageUrl}}" mode="aspectFill" class="manage-image"/>
+          <view class="manage-info">
+            <view class="manage-name">{{item.name}}</view>
+            <view class="manage-price">¥{{item.price}}</view>
+          </view>
+          <button class="delete-btn" bindtap="deleteProduct" data-id="{{item._id}}">删除</button>
+        </view>
+      </view>
+    </block>
+
+    <!-- 广告管理页面 -->
+    <block wx:if="{{selectedItemIndex === 3}}">
+      <view class="ad-manage-section">
+        <button class="add-ad-btn" bindtap="uploadAd">添加广告</button>
+        <view class="ad-list">
+          <view wx:if="{{adList.length === 0}}" class="empty-tip">
+            <text>暂无广告</text>
+          </view>
+          <view class="ad-item" wx:for="{{adList}}" wx:key="_id">
+            <image src="{{item.imageUrl}}" mode="aspectFill" class="ad-image"/>
+            <button class="delete-btn" 
+              data-id="{{item._id}}" 
+              data-file-id="{{item.imageUrl}}" 
+              bindtap="deleteAd">删除</button>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view> 

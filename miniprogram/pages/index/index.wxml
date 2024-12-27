@@ -1,0 +1,46 @@
+<!--index.wxml-->
+<view class="container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar" style="padding-top: {{menuPosition.top}}px;">
+    <view class="nav-title">云边的小卖部</view>
+    <view class="nav-tabs">
+      <view class="tab {{selectedItemIndex === 1 ? 'active' : ''}}" 
+        bindtap="onChangeTab" data-key="1">商品橱窗</view>
+      <view class="tab {{selectedItemIndex === 2 ? 'active' : ''}}" 
+        bindtap="onChangeTab" data-key="2">管理后台</view>
+    </view>
+  </view>
+
+  <!-- 广告轮播 -->
+  <view class="content" style="margin-top: {{menuPosition.top + menuPosition.height + 10}}px;">
+    <block wx:if="{{adList.length > 0}}">
+      <swiper class="ad-swiper" 
+        autoplay circular 
+        interval="3000" 
+        indicator-dots="{{true}}"
+        indicator-active-color="#000">
+        <swiper-item wx:for="{{adList}}" wx:key="_id">
+          <image src="{{item.imageUrl}}" mode="aspectFill" class="ad-image"/>
+        </swiper-item>
+      </swiper>
+    </block>
+
+    <!-- 商品列表 -->
+    <view class="product-list">
+      <view wx:if="{{productList.length === 0}}" class="empty-tip">
+        <text>暂无商品</text>
+      </view>
+      <view class="product-item" wx:for="{{productList}}" wx:key="_id">
+        <image src="{{item.imageUrl}}" mode="aspectFill" class="product-image"/>
+        <view class="product-info">
+          <view class="product-name">{{item.name}}</view>
+          <view class="product-desc">{{item.desc}}</view>
+          <view class="product-price-row">
+            <text class="product-price">¥{{item.price}}</text>
+            <button class="buy-btn" bindtap="onBuyTap" data-product="{{item}}">购买</button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
